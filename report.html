@@ -155,5 +155,61 @@
             }
         }
     </script>
+    <script>
+        // 1. Auto-fill logic when page loads
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            
+            if (user && user.role !== 'admin') {
+                // Fill in the boxes
+                document.getElementById('name').value = user.name;
+                document.getElementById('email').value = user.email;
+                // Lock the boxes so they can't be typed in
+                document.getElementById('name').readOnly = true;
+                document.getElementById('email').readOnly = true;
+                
+                // Update the instruction text
+                const pTag = document.querySelector('.form-card p');
+                if(pTag) pTag.innerText = "Logged in as " + user.name + ". Your contact info is pre-filled.";
+            }
+        };
+
+        // 2. The classroom/personal device toggle
+        function toggleDeviceFields() {
+            const isClassroom = document.querySelector('input[value="classroom"]').checked;
+            const classroomFields = document.getElementById('classroom-fields');
+            const personalFields = document.getElementById('personal-fields');
+
+            if (isClassroom) {
+                classroomFields.classList.remove('hidden');
+                personalFields.classList.add('hidden');
+            } else {
+                classroomFields.classList.add('hidden');
+                personalFields.classList.remove('hidden');
+            }
+        }
+
+        // 3. Save ticket to our fake local database
+        document.querySelector('form').addEventListener('submit', function(e) {
+            e.preventDefault(); 
+            const newTicket = {
+                id: Math.floor(Math.random() * 10000),
+                name: document.getElementById('name').value,
+                email: document.getElementById('email').value,
+                issue: document.getElementById('problem-desc').value,
+                status: "Open",
+                date: new Date().toLocaleDateString()
+            };
+
+            let tickets = JSON.parse(localStorage.getItem('tickets')) || [];
+            tickets.push(newTicket);
+            localStorage.setItem('tickets', JSON.stringify(tickets));
+
+            alert("Ticket Saved Locally! View it on your Dashboard.");
+            window.location.href = "dashboard.html"; 
+        });
+    </script>
+</body>
+</html>
 </body>
 </html>
