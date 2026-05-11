@@ -1,1 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - SchoolIT</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: #fff; border-bottom: 1px solid #e0e0e0; }
+        .logo { font-weight: bold; font-size: 1.2em; color: #0d47a1; display: flex; align-items: center; border: 2px solid #0d47a1; padding: 5px 10px; border-radius: 4px; text-decoration: none;}
+        
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        .panel { background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 30px; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .panel-header h2 { margin: 0; color: #333; }
+        
+        .btn-primary { background: #155bb5; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-primary:hover { background: #0d47a1; }
 
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background-color: #f8f9fa; font-weight: 600; color: #555; }
+        
+        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.85em; font-weight: bold; }
+        .status-Resolved { background: #e8f5e9; color: #2e7d32; }
+        .status-Open { background: #ffebee; color: #c62828; }
+        .status-In-Progress { background: #fff8e1; color: #f57f17; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">💻 SchoolIT Helpdesk</a>
+        <div>
+            <span id="userGreeting" style="margin-right: 15px;">👤 Logged in</span>
+            <a href="#" onclick="logout()" style="color: #555; text-decoration: none; font-weight: bold;">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🎫 My Report History</h2>
+                <a href="report.html" class="btn-primary">Report a New Problem</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Issue Reported</th>
+                        <th>Date Submitted</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="ticket-table-body">
+                    </tbody>
+            </table>
+        </div>
+    </div>
+
+    <script>
+        window.onload = function() {
+            // 1. Security Check: Are they logged in?
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            if (!user || user.role === 'admin') {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            // 2. Set greeting
+            document.getElementById('userGreeting').innerText = `👤 Logged in as: ${user.name}`;
+
+            // 3. Load tickets
+            const allTickets = JSON.parse(localStorage.getItem('tickets')) || [];
+            const tbody = document.getElementById('ticket-table-body');
+            
+            // Filter to only show tickets matching this user's email
+            const myTickets = allTickets.filter(ticket => ticket.email === user.email);
+
+            if (myTickets.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">You haven't submitted any tickets yet.</td></tr>`;
+                return;
+            }
+
+            // 4. Inject tickets into table
+            myTickets.forEach(ticket => {
+                // Format the status class name to match CSS (e.g., "In Progress" -> "status-In-Progress")
+                const statusClass = `status-${ticket.status.replace(" ", "-")}`;
+                
+                tbody.innerHTML += `
+                    <tr>
+                        <td>#${ticket.id}</td>
+                        <td>${ticket.issue}</td>
+                        <td>${ticket.date}</td>
+                        <td><span class="status-badge ${statusClass}">${ticket.status}</span></td>
+                    </tr>
+                `;
+            });
+        };
+
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
