@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report a Problem - SchoolIT</title>
+    <style>
+        /* Reusing the base styles from the main page */
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; padding: 0; 
+            background-color: #f4f6f9; color: #333; 
+        }
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 15px 40px; background: #fff; border-bottom: 1px solid #e0e0e0; 
+        }
+        .logo { 
+            font-weight: bold; font-size: 1.2em; color: #0d47a1; 
+            display: flex; align-items: center; border: 2px solid #0d47a1; 
+            padding: 5px 10px; border-radius: 4px; text-decoration: none;
+        }
+        
+        /* Form specific styles */
+        .container { max-width: 700px; margin: 40px auto; padding: 0 20px; }
+        .form-card {
+            background: #fff; padding: 30px 40px; border-radius: 8px;
+            border: 1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .form-card h2 { margin-top: 0; color: #155bb5; margin-bottom: 25px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.95em; }
+        
+        /* Inputs, Selects, and Textareas */
+        input[type="text"], input[type="email"], select, textarea {
+            width: 100%; padding: 10px; border: 1px solid #ccc; 
+            border-radius: 4px; font-family: inherit; font-size: 1em;
+            box-sizing: border-box; /* Ensures padding doesn't push width out */
+        }
+        textarea { resize: vertical; min-height: 100px; }
+        
+        /* Radio Buttons for Device Type */
+        .device-type-selector {
+            display: flex; gap: 20px; margin-bottom: 10px;
+        }
+        .device-type-selector label {
+            font-weight: normal; display: flex; align-items: center; gap: 5px; cursor: pointer;
+        }
+
+        /* Submit Button */
+        .btn-submit {
+            background: #155bb5; color: white; border: none;
+            padding: 12px 24px; font-size: 1em; font-weight: bold;
+            border-radius: 4px; cursor: pointer; width: 100%; margin-top: 10px;
+        }
+        .btn-submit:hover { background: #0d47a1; }
+
+        /* Hidden sections */
+        .hidden { display: none; }
+        
+        .back-link { display: inline-block; margin-bottom: 20px; color: #555; text-decoration: none; font-size: 0.9em; }
+        .back-link:hover { text-decoration: underline; }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">💻 SchoolIT Helpdesk</a>
+    </header>
+
+    <div class="container">
+        <a href="index.html" class="back-link">← Back to Main Page</a>
+        
+        <div class="form-card">
+            <h2>Report a Device Problem</h2>
+            <p style="color: #666; margin-bottom: 25px;">Fill out the form below. Since you are not logged in, please provide your contact details so we can reach you.</p>
+            
+            <form action="index.html" method="GET">
+                
+                <div class="form-group">
+                    <label for="name">Your Name</label>
+                    <input type="text" id="name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">School Email</label>
+                    <input type="email" id="email" placeholder="johndoe@school.edu" required>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid #eee; margin: 25px 0;">
+
+                <div class="form-group">
+                    <label>Where is the device located?</label>
+                    <div class="device-type-selector">
+                        <label><input type="radio" name="device_type" value="classroom" checked onchange="toggleDeviceFields()"> Classroom Device</label>
+                        <label><input type="radio" name="device_type" value="personal" onchange="toggleDeviceFields()"> Personal Device</label>
+                    </div>
+                </div>
+
+                <div id="classroom-fields">
+                    <div class="form-group">
+                        <label for="class-select">Select Class/Room</label>
+                        <select id="class-select">
+                            <option value="">-- Choose a Room --</option>
+                            <option value="room101">Room 101 - Science Lab</option>
+                            <option value="room102">Room 102 - Computer Lab</option>
+                            <option value="library">Main Library</option>
+                            <option value="auditorium">Auditorium</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="classroom-device">Select Broken Device</label>
+                        <select id="classroom-device">
+                            <option value="">-- Choose a Device --</option>
+                            <option value="projector">Smart Projector</option>
+                            <option value="teacher-pc">Teacher Desktop PC</option>
+                            <option value="printer">Room Printer</option>
+                            <option value="smartboard">Interactive Smartboard</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div id="personal-fields" class="hidden">
+                    <div class="form-group">
+                        <label for="personal-device">Device Make & Model</label>
+                        <input type="text" id="personal-device" placeholder="e.g., School Chromebook, iPad Pro, Dell Latitude">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="problem-desc">Describe the Problem</label>
+                    <textarea id="problem-desc" placeholder="Please describe what is happening in detail..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-submit">Submit Ticket</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function toggleDeviceFields() {
+            // Get the radio buttons and the two sections
+            const isClassroom = document.querySelector('input[value="classroom"]').checked;
+            const classroomFields = document.getElementById('classroom-fields');
+            const personalFields = document.getElementById('personal-fields');
+
+            // Show or hide based on what is selected
+            if (isClassroom) {
+                classroomFields.classList.remove('hidden');
+                personalFields.classList.add('hidden');
+            } else {
+                classroomFields.classList.add('hidden');
+                personalFields.classList.remove('hidden');
+            }
+        }
+    </script>
+</body>
+</html>
