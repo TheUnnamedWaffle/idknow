@@ -116,6 +116,29 @@
             </div>
         </div>
     </div>
+<script>
+        // Check if user is logged in when the page loads
+        window.onload = function() {
+            const user = JSON.parse(localStorage.getItem('currentUser'));
+            const authButtons = document.querySelector('.auth-buttons');
 
+            // If a user exists in memory, change the top right buttons
+            if (user) {
+                authButtons.innerHTML = `
+                    <span style="margin-right:15px; font-weight: 500;">Hi, ${user.name}</span>
+                    <button class="btn-login" onclick="logout()">Logout</button>
+                    <a href="${user.role === 'admin' ? 'admin.html' : 'dashboard.html'}" style="text-decoration:none; padding:8px 16px; background:#155bb5; color:white; border-radius:4px; font-weight: bold; margin-left: 10px;">Dashboard</a>
+                `;
+            }
+        };
+
+        // Logout logic
+        function logout() {
+            localStorage.removeItem('currentUser');
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
 </body>
 </html>
