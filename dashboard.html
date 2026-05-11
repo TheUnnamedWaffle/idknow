@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Dashboard - SchoolIT</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; margin: 0; padding: 0; background-color: #f4f6f9; color: #333; }
+        header { display: flex; justify-content: space-between; align-items: center; padding: 15px 40px; background: #fff; border-bottom: 1px solid #e0e0e0; }
+        .logo { font-weight: bold; font-size: 1.2em; color: #0d47a1; display: flex; align-items: center; border: 2px solid #0d47a1; padding: 5px 10px; border-radius: 4px; text-decoration: none;}
+        
+        .container { max-width: 1000px; margin: 30px auto; padding: 0 20px; }
+        
+        .panel { background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #e0e0e0; margin-bottom: 30px; }
+        .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .panel-header h2 { margin: 0; color: #333; }
+        
+        /* Buttons */
+        .btn-primary { background: #155bb5; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; font-weight: bold; text-decoration: none; }
+        .btn-primary:hover { background: #0d47a1; }
+        .btn-danger { background: #fff; color: #d32f2f; border: 1px solid #d32f2f; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+        .btn-danger:hover { background: #ffebee; }
+
+        /* Tables */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background-color: #f8f9fa; font-weight: 600; color: #555; }
+        
+        .status-badge { padding: 5px 10px; border-radius: 20px; font-size: 0.85em; font-weight: bold; }
+        .status-resolved { background: #e8f5e9; color: #2e7d32; }
+        .status-open { background: #ffebee; color: #c62828; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">💻 SchoolIT Helpdesk</a>
+        <div>
+            <span style="margin-right: 15px;">👤 Logged in as: Student</span>
+            <a href="index.html" style="color: #555; text-decoration: none;">Logout</a>
+        </div>
+    </header>
+
+    <div class="container">
+        
+        <div class="panel">
+            <div class="panel-header">
+                <h2>📱 My Devices</h2>
+                <button class="btn-primary">+ Add New Device</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Device Name</th>
+                        <th>Type</th>
+                        <th>Date Added</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>School Chromebook (#CB-492)</td>
+                        <td>Laptop</td>
+                        <td>Sep 1, 2025</td>
+                        <td><button class="btn-danger">Delete</button></td>
+                    </tr>
+                    <tr>
+                        <td>Personal iPad</td>
+                        <td>Tablet</td>
+                        <td>Oct 15, 2025</td>
+                        <td><button class="btn-danger">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="panel">
+            <div class="panel-header">
+                <h2>🎫 My Report History</h2>
+                <a href="report.html" class="btn-primary">Report a New Problem</a>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ticket ID</th>
+                        <th>Device</th>
+                        <th>Issue Reported</th>
+                        <th>Date Submitted</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1043</td>
+                        <td>School Chromebook (#CB-492)</td>
+                        <td>Keyboard missing 'E' key.</td>
+                        <td>May 10, 2026</td>
+                        <td><span class="status-badge status-open">In Progress</span></td>
+                    </tr>
+                    <tr>
+                        <td>#0891</td>
+                        <td>Personal iPad</td>
+                        <td>Cannot connect to school Wi-Fi.</td>
+                        <td>Feb 22, 2026</td>
+                        <td><span class="status-badge status-resolved">Resolved</span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</body>
+</html>
